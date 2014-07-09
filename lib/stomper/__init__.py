@@ -35,8 +35,8 @@ import types
 import logging
 
 
-import utils
-import stompbuffer
+from . import utils
+from . import stompbuffer
 
 # This is used as a return from message responses functions.
 # It is used more for readability more then anything or reason.
@@ -409,14 +409,14 @@ class Engine(object):
 
         # If its not a string assume its a dict.
         mtype = type(msg)
-        if mtype in types.StringTypes:
+        if mtype in str:
             msg = unpack_frame(msg)
-        elif mtype == types.DictType:
+        elif mtype == dict:
             pass
         else:
             raise FrameError("Unknown message type '%s', I don't know what to do with this!" % mtype)
 
-        if self.states.has_key(msg['cmd']):
+	if msg['cmd'] in self.states:
 #            print("reacting to message - %s" % msg['cmd'])
             returned = self.states[msg['cmd']](msg)
 
@@ -450,8 +450,7 @@ class Engine(object):
         """
         message_id = msg['headers']['message-id']
 
-        transaction_id = None
-        if msg['headers'].has_key('transaction-id'):
+	if 'transaction-id' in msg['headers']:
             transaction_id = msg['headers']['transaction-id']
 
 #        print "acknowledging message id <%s>." % message_id
@@ -471,7 +470,7 @@ class Engine(object):
         body = msg['body'].replace(NULL, '')
 
         brief_msg = ""
-        if msg['headers'].has_key('message'):
+	if 'message' in msg['headers']:
             brief_msg = msg['headers']['message']
 
         self.log.error("Received server error - message%s\n\n%s" % (brief_msg, body))
@@ -495,7 +494,7 @@ class Engine(object):
         body = msg['body'].replace(NULL, '')
 
         brief_msg = ""
-        if msg['headers'].has_key('receipt-id'):
+	if 'receipt-id' in msg['headers']:
             brief_msg = msg['headers']['receipt-id']
 
         self.log.info("Received server receipt message - receipt-id:%s\n\n%s" % (brief_msg, body))
