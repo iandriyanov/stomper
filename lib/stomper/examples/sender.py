@@ -77,7 +77,7 @@ class StompProtocol(Protocol, stomper.Engine):
         """
 
 	
-	counter = next(self.counter)
+        counter = next(self.counter)
         
         self.log.info("senderID:%s Saying hello (%d)." % (self.senderID, counter))
 

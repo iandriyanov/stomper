@@ -417,7 +417,7 @@ class Engine(object):
             raise FrameError("Unknown message type '%s', I don't know what to do with this!" % mtype)
 
 
-	if msg['cmd'] in self.states:
+        if msg['cmd'] in self.states:
 #            print("reacting to message - %s" % msg['cmd'])
             returned = self.states[msg['cmd']](msg)
 
