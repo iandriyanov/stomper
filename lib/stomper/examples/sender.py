@@ -75,6 +75,8 @@ class StompProtocol(Protocol, stomper.Engine):
     def send(self):
         """Send out a hello message periodically.
         """
+
+	
 	counter = next(self.counter)
         
         self.log.info("senderID:%s Saying hello (%d)." % (self.senderID, counter))
